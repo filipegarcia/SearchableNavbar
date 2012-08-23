@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Components · Bootstrap Menu Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/jquery.ui.css" rel="stylesheet">
+    <link href="assets/css/searchable-navbar.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+    <script src="assets/js/jquery.js"></script>
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html">Bootstrap</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active">
+                <a href="#">Home</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>Searchable Navbar</h1>
+    <p class="lead">Generate a searchable bootstrap navbar from array. With icons, active element, DropDown, Submenu, and search with highlight.</p>  </div>
+</header>
+
+  <div class="container">
+
+      <!-- Dropdowns
+      ================================================== -->
+      <section id="dropdowns">
+        <div class="page-header">
+          <h1>Searchable Navbar</h1>
+        </div>
+
+        <h2>Example</h2>
+        <p>Same functionality as the bootstrap navbar component but it can also be used as a Main Menu. <br>
+        The search is <i>à la</i> Mac OS menu bar.<br>
+        Normally on <code>select</code> you open the link, but this can be changed for other usages.<br>
+        </p>
+        <div class="bs-docs-example">
+
+          <div id="newnav"></div>
+
+        </div>
+<pre class="prettyprint linenums">
+home
+link1
+link2
+DropDown [ link3
+           link4
+           Submenu [  link5
+                      link6
+                    ]
+          ]
+link7
+link8
+Dropdown  [ link9
+            link10
+          ]
+</pre>
+
+    <h2>Markup</h2>
+    <p>A multidimensional array can be built with javascript or your favourite language. The array can include elements, multiple submenus and multiple dropdowns. <br>
+    The <code>id=""</code> of the elements have to be unique otherwise the search will only find the first path. But you already knew that right?
+    The search is <code>.pull-right</code> so the unfold of the submenus doesn't overlap the autocompletion box.
+    <br>
+    The same array that generates the navbar is used for the search autocomplete and to generate the path to the selected element.
+
+    </p>
+
+<pre class="prettyprint linenums">
+&lt;script type="text/javascript"&gt;
+//Element(link, id, label icon(optional), active(optional) )
+//Submenu("submenu", id, label, Array() )
+//Dropdown("dropdown", id, label, Array() )
+  var NavPoints = new Array();
+  NavPoints.push( new Array('#homeLink', "11", "Home", "icon-home"));
+  NavPoints.push( new Array( "", "12", "Vdivider"));
+  NavPoints.push( new Array('#link1',  "13", "link1"));
+  NavPoints.push( new Array('#link2', "15", "link2"));
+  NavPoints.push( new Array("NotUsed", "16", "Vdivider"));
+  NavPoints.push( new Array("dropdown", "17", "Go Down",  DropDown));
+
+  var DropDown = new Array();
+  DropDown.push( new Array("link3", "21", "label1", "icon-signal"));
+  DropDown.push( new Array("link4", "22", "label2", "icon-cog"));
+  DropDown.push( new Array("", "23", "Hseparator"));
+  DropDown.push( new Array("submenu", "24", "Go right", subMenu ));
+
+  var SubMenu = new Array();
+  SubMenu.push( new Array("#link5", "31", "link5" ));
+  SubMenu.push( new Array("#link6", "32", "link6", "icon-align-center" ));
+  SubMenu.push( new Array("", "33", "Hseparator"));
+  SubMenu.push( new Array("submenu", "34", "Right Again", subMenu2));
+
+  MakeNav("NewNav", NavPoints);
+
+&lt;/script&gt;
+
+&lt;div id="NewNav"&gt;&lt;/div&gt;
+
+
+</pre>
+
+          <h2>Options</h2>
+          <p>The navbar structure can be stored in a database and sent from your favorite language to javascript.</p>
+
+          <h3>PHP</h3>
+          <p>Using <code>json_encode</code> is a good way to parse a multidimetional array from php to javascript.</p>
+<pre class="prettyprint linenums">
+&lt;?php
+  $navBar = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+?&gt;
+
+&lt;script?&gt;
+  var NavPoints = &lt;?php echo json_encode($navBar)?&gt;;
+&lt;/script?&gt;
+
+</pre>
+
+          <h3>.NET</h3>
+          <p></p>
+
+<pre class="prettyprint linenums">
+</pre>
+
+    <h2>Dependencies</h2>
+      <p>Done with Bootstrap Version 2.1.0 and jQuery UI. It could be changed in the future for bootstrap Typeahead. <br>
+    </p>
+
+<pre class="prettyprint linenums">
+&lt;link href="assets/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link href="assets/css/jquery.ui.css" rel="stylesheet"&gt;
+&lt;link href="assets/css/searchable-navbar.css" rel="stylesheet"&gt;
+
+&lt;script src="assets/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="assets/js/jquery.ui.js"&gt;&lt;/script&gt;
+&lt;script src="assets/js/bootstrap-searchablenavbar.js"&gt;&lt;/script&gt;
+</pre>
+
+
+  <h2>ToDos:</h2>
+    <p>Add a hovering div over the selected element.</p>
+    <p>Check if jquery ui can be changed to typehead funciont.</p>
+    <p>Do something with the selected element.</p>
+    <p>Add shortcut to the elements.</p>
+
+
+        </section>
+
+  </div>
+
+
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Searchable Navbar <a href="https://github.com/filipegarcia/BootstrapMenuGenerator">Filipe Garcia</a>.</p>
+        <p>Twitter Bootsrap with all the love in the world <a href="http://twitter.com/twitter" target="_blank">@twitter</a> by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
+        <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <p>Icons from <a href="http://glyphicons.com">Glyphicons Free</a>, licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <p>jQuery UI from <a href="http://http://jqueryui.com">jQuery UI</a>.</p>
+        <p>jQuery UI Bootstrap theme from <a href="http://addyosmani.github.com/jquery-ui-bootstrap/">Addy Osmani</a>.</p>
+
+      </div>
+    </footer>
+
+
+<script type="text/javascript">
+
+function initNavArray(){
+
+//Element(link, id, label icon(optional), active(optional))
+//Submenu("submenu", id, label, Array() )
+//Dropdown("dropdown", id, label, Array())
+
+//Test menu example
+  var DropDown2 = new Array();
+  DropDown2.push( new Array("link1", "51", "link9", "icon-signal"));
+  DropDown2.push( new Array("link4", "52", "link10", "icon-cog"));
+
+  var SubMenu2 = new Array();
+  SubMenu2.push( new Array("#stuff", "41", "This is deep stuff"));
+  SubMenu2.push( new Array("#bla", "42", "hum?"));
+  SubMenu2.push( new Array("#blabla", "43", "what are you doing in here?", "icon-flag"));
+
+  var SubMenu = new Array();
+  SubMenu.push( new Array("#link5", "31", "link5" ));
+  SubMenu.push( new Array("#sublink4", "32", "link6", "icon-align-center" ));
+  SubMenu.push( new Array("", "33", "Hseparator"));
+  SubMenu.push( new Array("submenu", "34", "Right Again", SubMenu2));
+
+  var DropDown = new Array();
+  DropDown.push( new Array("link1", "21", "link3", " icon-tag"));
+  DropDown.push( new Array("link4", "22", "link4", "icon-tags"));
+  DropDown.push( new Array("", "23", "Hseparator"));
+  DropDown.push( new Array("submenu", "24", "Go right", SubMenu ));
+
+  var NavPoints = new Array();
+  NavPoints.push( new Array('#homeLink', "11", "Home", "icon-home"));
+  NavPoints.push( new Array( "", "12", "Vdivider"));
+  NavPoints.push( new Array('#link1',  "13", "link1"));
+  NavPoints.push( new Array('#link2', "15", "link2"));
+  NavPoints.push( new Array("NotUsed", "16", "Vdivider"));
+  NavPoints.push( new Array("dropdown", "17", "Go Down",  DropDown));
+  NavPoints.push( new Array("#link7", "18", "link7"));
+  NavPoints.push( new Array("#link8", "19", "link8"));
+  NavPoints.push( new Array("dropdown", "10", "Once more",  DropDown2));
+
+
+  return NavPoints;
+}
+
+
+
+$(document).ready(function(){
+
+  var NavPoints = initNavArray();
+  searchableNavbar("newnav", NavPoints);
+
+});
+
+</script>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="assets/js/jquery.ui.js"></script>
+    <script src="assets/js/bootstrap-searchablenavbar.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+    <script src="assets/js/application.js"></script>
+
+
+
+  </body>
+</html>
