@@ -81,6 +81,12 @@
 
         </div>
 <pre class="prettyprint linenums">
+
+Element(link, id, label icon(optional), active(optional) )
+Submenu('submenu', id, label, Array() )
+Dropdown('dropdown', id, label, Array() )
+
+
 home
 link1
 link2
@@ -137,8 +143,10 @@ Dropdown  [ link9
 
 &lt;div id="NewNav"&gt;&lt;/div&gt;
 
-
 </pre>
+
+    <h3>Two way</h3>
+    <p>You can use either just the builder or the searchable function.</p>
 
           <h2>Options</h2>
           <p>The navbar structure can be stored in a database and sent from your favorite language to javascript.</p>
@@ -147,12 +155,21 @@ Dropdown  [ link9
           <p>Using <code>json_encode</code> is a good way to parse a multidimetional array from php to javascript.</p>
 <pre class="prettyprint linenums">
 &lt;?php
-  $navBar = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+
+//fetch structure from DB (this case Doctrine)
+  $navBar = Doctrine::getTable('navbar')->findOneByUser('admin');
+
 ?&gt;
 
 &lt;script&gt;
-  var NavPoints = &lt;?php echo json_encode($navBar)?&gt;;
+
+  var NavPoints = &lt;?php echo json_encode( $navBar->getStructure() )?&gt;;
+  MakeNav("NewNav", NavPoints);
+
 &lt;/script&gt;
+
+
+&lt;div id="NewNav"&gt;&lt;/div&gt;
 
 </pre>
 
@@ -198,7 +215,6 @@ Dropdown  [ link9
   <h2>ToDos:</h2>
     <p>Add a hovering div over the selected element.</p>
     <p>Check if jquery ui can be changed to typehead function.</p>
-    <p>Do something with the selected element.</p>
     <p>Add shortcut to the elements.</p>
 
 
@@ -234,8 +250,8 @@ function initNavArray(){
 
 //Test menu example
   var DropDown2 = new Array();
-  DropDown2.push( new Array("link1", "51", "link9", "icon-signal"));
-  DropDown2.push( new Array("link4", "52", "link10", "icon-cog"));
+  DropDown2.push( new Array("#link9", "51", "link9", "icon-signal"));
+  DropDown2.push( new Array("#link10", "52", "link10", "icon-cog"));
 
   var SubMenu2 = new Array();
   SubMenu2.push( new Array("#stuff", "41", "This is deep stuff"));
@@ -249,16 +265,16 @@ function initNavArray(){
   SubMenu.push( new Array("submenu", "34", "Right Again", SubMenu2));
 
   var DropDown = new Array();
-  DropDown.push( new Array("link1", "21", "link3", " icon-tag"));
-  DropDown.push( new Array("link4", "22", "link4", "icon-tags"));
+  DropDown.push( new Array("#link3", "21", "link3", " icon-tag"));
+  DropDown.push( new Array("#link4", "22", "link4", "icon-tags"));
   DropDown.push( new Array("", "23", "Hseparator"));
   DropDown.push( new Array("submenu", "24", "Go right", SubMenu ));
 
   var NavPoints = new Array();
-  NavPoints.push( new Array('#homeLink', "11", "Home", "icon-home"));
+  NavPoints.push( new Array("#homeLink", "11", "Home", "icon-home"));
   NavPoints.push( new Array( "", "12", "Vdivider"));
-  NavPoints.push( new Array('#link1',  "13", "link1"));
-  NavPoints.push( new Array('#link2', "15", "link2"));
+  NavPoints.push( new Array("#link1",  "13", "link1"));
+  NavPoints.push( new Array("#link2", "15", "link2"));
   NavPoints.push( new Array("NotUsed", "16", "Vdivider"));
   NavPoints.push( new Array("dropdown", "17", "Go Down",  DropDown));
   NavPoints.push( new Array("#link7", "18", "link7"));
@@ -302,17 +318,6 @@ $(document).ready(function(){
     <script src="assets/js/application.js"></script>
 
 
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-34301079-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
 
   </body>
 </html>
