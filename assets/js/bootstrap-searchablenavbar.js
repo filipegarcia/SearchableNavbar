@@ -170,7 +170,8 @@ function GeneratePath(NavPoints, toFind){
 function NavSearchAutoComplete(SearchId, NavPoints){
 
   var MenuItems = buildMenuItem(NavPoints);
-  $('#'+SearchId).focus();
+
+  //$('#'+SearchId).focus();
 
   $( '#'+SearchId ).autocomplete({
       source: MenuItems,
