@@ -110,15 +110,15 @@ function buildMenuItem(NavPoints) {
   jQuery.each(NavPoints, function(index, value) {
 
     if (value[0] == "dropdown") {
-      MenuItems.push({ value: value[2], id: value[1], label: value[2]  });
+      MenuItems.push({ value: value[2], id: value[1], label: value[2] , link: value[0] });
       $.merge(MenuItems, buildMenuItem(value[3]) );
     }
     else if(value[0] == "submenu"){
-      MenuItems.push({ value: value[2], id: value[1], label: value[2]  });
+      MenuItems.push({ value: value[2], id: value[1], label: value[2] , link: value[0] });
       $.merge(MenuItems, buildMenuItem(value[3]));
     }
     else if (value[2] != "Hseparator" && value[2] != "Vdivider"){
-      MenuItems.push({ value: value[2], id: value[1], label: value[2]  });
+      MenuItems.push({ value: value[2], id: value[1], label: value[2] , link: value[0] });
     }
 
   });
@@ -190,20 +190,23 @@ function NavSearchAutoComplete(SearchId, NavPoints){
 
   var MenuItems = buildMenuItem(NavPoints);
 
+  // if you want focus on the search bar uncomment this ()
   //$('#'+SearchId).focus();
-
 
   $( '#'+SearchId ).autocomplete({
       source: MenuItems,
       select: function( event, ui ) {
         RemoveNavActive('#MainNav');
-        console.log(ui.item.id )},
+        window.location.hash = ui.item.link;
+        // you can use window.location or window.open with the full url
+      },
       focus: function(event, ui) {
         RemoveNavActive('#MainNav');
 
         path = GeneratePath(NavPoints, ui.item.id).reverse();
 
         HighlightPath(path, ui.item.id);
+
       },
       change: function(event, ui){
         RemoveNavActive('#MainNav');
