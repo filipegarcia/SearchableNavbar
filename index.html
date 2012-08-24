@@ -63,6 +63,7 @@
 
   <div class="container">
 
+
       <!-- Dropdowns
       ================================================== -->
       <section id="dropdowns">
@@ -213,7 +214,6 @@ Dropdown  [ link9
 
 
   <h2>ToDos:</h2>
-    <p>Add a hovering div over the selected element.</p>
     <p>Check if jquery ui can be changed to typehead function.</p>
     <p>Add shortcut to the elements.</p>
 
@@ -290,7 +290,7 @@ function initNavArray(){
 $(document).ready(function(){
 
   var NavPoints = initNavArray();
-  searchableNavbar("newnav", NavPoints);
+  searchableNavbar("newnav", NavPoints, true);
 
 });
 

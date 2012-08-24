@@ -85,7 +85,7 @@ function LineNav(NavPoints){
 }
 
 function RemoveNavActive(navBar){
-
+  $("#elementFound").hide();
   $(navBar).find('.active').removeClass('active');
   $(navBar).find('.open').removeClass('open');
   $(navBar).find('.submenu-show').removeClass('submenu-show').addClass('submenu-hide');
@@ -186,7 +186,17 @@ function HighlightPath(path, element){
 }
 
 
-function NavSearchAutoComplete(SearchId, NavPoints){
+function HoverOnElement(element){
+
+  element = $("#"+element);
+  var offset = element.offset();
+$("#elementFound").show();
+  $("#elementFound").offset({ top: offset.top, left: offset.left+element.parent().width()+10})
+
+}
+
+
+function NavSearchAutoComplete(SearchId, NavPoints, showHover){
 
   var MenuItems = buildMenuItem(NavPoints);
 
@@ -206,6 +216,9 @@ function NavSearchAutoComplete(SearchId, NavPoints){
         path = GeneratePath(NavPoints, ui.item.id).reverse();
 
         HighlightPath(path, ui.item.id);
+        if (showHover) {
+          HoverOnElement(ui.item.id);
+        };
 
       },
       change: function(event, ui){
@@ -229,12 +242,19 @@ function NavSearchAutoComplete(SearchId, NavPoints){
 
 
 
-function searchableNavbar(navId, NavPoints){
+function searchableNavbar(navId, NavPoints, showHover){
 
   SearchId = "NavSearch";
 
   $('#'+navId).html(NavHead("Super Menu") + NavBody(NavPoints) + NavSearch(SearchId) + NavFooter() );
-  NavSearchAutoComplete(SearchId, NavPoints);
+  NavSearchAutoComplete(SearchId, NavPoints, showHover);
+
+  if (showHover) {
+    str = '<div id="elementFound" class="bounce popover right searchHovering"><div class="arrow"></div><div class="popover-content"><p>&nbsp;</p></div></div>';
+    //append this anywhere in the page
+    $("#"+navId).append(str);
+  };
+
 
   SubmenuInit();
 
