@@ -82,3 +82,66 @@
   background-repeat: repeat-x;
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
 }
+
+
+
+/* arrow element */
+
+
+
+#elementFound{
+  float: left;
+  width: 140px;
+  height: 26px;
+  margin: 20px;
+  border-left-style: none;
+}
+
+@-webkit-keyframes bounce {
+0% , 100% {-webkit-transform: translateY(0px);}
+25% {-webkit-transform: translateY(-2px);}
+50% {-webkit-transform: translateY(-4px);}
+75% {-webkit-transform: translateY(-2px);}
+}
+
+@-moz-keyframes bounce {
+0% , 100% {-moz-transform: translateY(0px);}
+25% {-moz-transform: translateY(-2px);}
+50% {-moz-transform: translateY(-4px);}
+75% {-moz-transform: translateY(-2px);}
+}
+
+@-o-keyframes bounce {
+0% , 100% {-o-transform: translateY(0px);}
+25% {-o-transform: translateY(-2px);}
+50% {-o-transform: translateY(-4px);}
+75% {-o-transform: translateY(-2px);}
+}
+@keyframes bounce {
+0% , 100% {transform: translateY(0px);}
+25% {transform: translateY(-2px);}
+50% {transform: translateY(-4px);}
+75% {transform: translateY(-2px);}
+}
+
+.bounce {
+  animation-duration:1s;
+  -moz-animation-duration:2s;
+  -webkit-animation-duration:3s;
+  -o-animation-duration:2s;
+
+  animation-timing-function:ease-in-out;
+  -moz-animation-timing-function:linear;
+  -webkit-animation-timing-function:linear;
+  -o-animation-timing-function:linear;
+
+  animation-iteration-count:infinite;
+  -moz-animation-iteration-count:infinite;
+  -webkit-animation-iteration-count:infinite;
+  -o-animation-iteration-count:infinite;
+
+  -webkit-animation-name: bounce;
+  -moz-animation-name: bounce;
+  -o-animation-name: bounce;
+  animation-name: bounce;
+}

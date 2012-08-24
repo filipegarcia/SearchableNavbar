@@ -85,7 +85,7 @@ function LineNav(NavPoints){
 }
 
 function RemoveNavActive(navBar){
-
+  $("#elementFound").hide();
   $(navBar).find('.active').removeClass('active');
   $(navBar).find('.open').removeClass('open');
   $(navBar).find('.submenu-show').removeClass('submenu-show').addClass('submenu-hide');
@@ -110,15 +110,15 @@ function buildMenuItem(NavPoints) {
   jQuery.each(NavPoints, function(index, value) {
 
     if (value[0] == "dropdown") {
-      MenuItems.push({ value: value[2], id: value[1], label: value[2]  });
+      MenuItems.push({ value: value[2], id: value[1], label: value[2] , link: value[0] });
       $.merge(MenuItems, buildMenuItem(value[3]) );
     }
     else if(value[0] == "submenu"){
-      MenuItems.push({ value: value[2], id: value[1], label: value[2]  });
+      MenuItems.push({ value: value[2], id: value[1], label: value[2] , link: value[0] });
       $.merge(MenuItems, buildMenuItem(value[3]));
     }
     else if (value[2] != "Hseparator" && value[2] != "Vdivider"){
-      MenuItems.push({ value: value[2], id: value[1], label: value[2]  });
+      MenuItems.push({ value: value[2], id: value[1], label: value[2] , link: value[0] });
     }
 
   });
@@ -166,38 +166,59 @@ function GeneratePath(NavPoints, toFind){
  return null;
 }
 
+function HighlightPath(path, element){
 
-function NavSearchAutoComplete(SearchId, NavPoints){
+  $.each(path, function(index, value) {
+  //For the items inside the submenu
+    if ( $('#'+value[1]).parent().hasClass('submenu')  ) {
+      $('#'+value[1]).parent().children('ul').removeClass('submenu-hide').addClass('submenu-show');
+      $('#'+value[1]).parent().children('a').addClass('active');
+    }
+    //For the dropdown selected items
+     if ( $('#'+value[1]).parent().hasClass('dropdown')  ) {
+      $('#'+value[1]).parent().addClass('open');
+    }
+  });
+
+  $('#'+element).parent().addClass('active');
+  $('#'+element).addClass('active');
+
+}
+
+
+function HoverOnElement(element){
+
+  element = $("#"+element);
+  var offset = element.offset();
+$("#elementFound").show();
+  $("#elementFound").offset({ top: offset.top, left: offset.left+element.parent().width()+10})
+
+}
+
+
+function NavSearchAutoComplete(SearchId, NavPoints, showHover){
 
   var MenuItems = buildMenuItem(NavPoints);
 
+  // if you want focus on the search bar uncomment this ()
   //$('#'+SearchId).focus();
 
   $( '#'+SearchId ).autocomplete({
       source: MenuItems,
       select: function( event, ui ) {
         RemoveNavActive('#MainNav');
-        console.log(ui.item.id )},
+        window.location.hash = ui.item.link;
+        // you can use window.location or window.open with the full url
+      },
       focus: function(event, ui) {
         RemoveNavActive('#MainNav');
 
         path = GeneratePath(NavPoints, ui.item.id).reverse();
 
-        $.each(path, function(index, value) {
-          //For the items inside the submenu
-          if ( $('#'+value[1]).parent().hasClass('submenu')  ) {
-            $('#'+value[1]).parent().children('ul').removeClass('submenu-hide').addClass('submenu-show');
-            $('#'+value[1]).parent().children('a').addClass('active');
-          }
-          //For the dropdown selected items
-           if ( $('#'+value[1]).parent().hasClass('dropdown')  ) {
-            $('#'+value[1]).parent().addClass('open');
-          }
-
-        });
-
-        $('#'+ui.item.id).parent().addClass('active');
-        $('#'+ui.item.id).addClass('active');
+        HighlightPath(path, ui.item.id);
+        if (showHover) {
+          HoverOnElement(ui.item.id);
+        };
 
       },
       change: function(event, ui){
@@ -221,12 +242,19 @@ function NavSearchAutoComplete(SearchId, NavPoints){
 
 
 
-function searchableNavbar(navId, NavPoints){
+function searchableNavbar(navId, NavPoints, showHover){
 
   SearchId = "NavSearch";
 
   $('#'+navId).html(NavHead("Super Menu") + NavBody(NavPoints) + NavSearch(SearchId) + NavFooter() );
-  NavSearchAutoComplete(SearchId, NavPoints);
+  NavSearchAutoComplete(SearchId, NavPoints, showHover);
+
+  if (showHover) {
+    str = '<div id="elementFound" class="bounce popover right searchHovering"><div class="arrow"></div><div class="popover-content"><p>&nbsp;</p></div></div>';
+    //append this anywhere in the page
+    $("#"+navId).append(str);
+  };
+
 
   SubmenuInit();
 
