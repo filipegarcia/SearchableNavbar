@@ -166,12 +166,32 @@ function GeneratePath(NavPoints, toFind){
  return null;
 }
 
+function HighlightPath(path, element){
+
+  $.each(path, function(index, value) {
+  //For the items inside the submenu
+    if ( $('#'+value[1]).parent().hasClass('submenu')  ) {
+      $('#'+value[1]).parent().children('ul').removeClass('submenu-hide').addClass('submenu-show');
+      $('#'+value[1]).parent().children('a').addClass('active');
+    }
+    //For the dropdown selected items
+     if ( $('#'+value[1]).parent().hasClass('dropdown')  ) {
+      $('#'+value[1]).parent().addClass('open');
+    }
+  });
+
+  $('#'+element).parent().addClass('active');
+  $('#'+element).addClass('active');
+
+}
+
 
 function NavSearchAutoComplete(SearchId, NavPoints){
 
   var MenuItems = buildMenuItem(NavPoints);
 
   //$('#'+SearchId).focus();
+
 
   $( '#'+SearchId ).autocomplete({
       source: MenuItems,
@@ -183,22 +203,7 @@ function NavSearchAutoComplete(SearchId, NavPoints){
 
         path = GeneratePath(NavPoints, ui.item.id).reverse();
 
-        $.each(path, function(index, value) {
-          //For the items inside the submenu
-          if ( $('#'+value[1]).parent().hasClass('submenu')  ) {
-            $('#'+value[1]).parent().children('ul').removeClass('submenu-hide').addClass('submenu-show');
-            $('#'+value[1]).parent().children('a').addClass('active');
-          }
-          //For the dropdown selected items
-           if ( $('#'+value[1]).parent().hasClass('dropdown')  ) {
-            $('#'+value[1]).parent().addClass('open');
-          }
-
-        });
-
-        $('#'+ui.item.id).parent().addClass('active');
-        $('#'+ui.item.id).addClass('active');
-
+        HighlightPath(path, ui.item.id);
       },
       change: function(event, ui){
         RemoveNavActive('#MainNav');
