@@ -105,11 +105,17 @@ Dropdown  [ link9
 </pre>
 
     <h2>Markup</h2>
-    <p>A multidimensional array can be built with javascript or your favourite language. The array can include elements, multiple submenus and multiple dropdowns. <br>
-    The <code>id=""</code> of the elements have to be unique otherwise the search will only find the first path. But you already knew that right?
-    The search is <code>.pull-right</code> so the unfold of the submenus doesn't overlap the autocompletion box.
-    <br>
-    The same array that generates the navbar is used for the search autocomplete and to generate the path to the selected element.
+    <p>
+      A multidimensional array can be built with javascript or your favourite language. The array can include elements, multiple submenus and multiple dropdowns. <br>
+      The <code>id=""</code> of the elements have to be unique otherwise the search will only find the first path. But you already knew that right?
+      The search is <code>.pull-right</code> so the unfold of the submenus doesn't overlap the autocompletion box.
+      <br>
+      The same array that generates the navbar is used for the search autocomplete and to generate the path to the selected element. <br>
+
+      <h4>Arguments</h4>
+      <p>
+        <code>searchableNavbar()</code> function get as parameter the <code>id</code> to append the navbar, an <code>array</code> of items and a <code>bolean</code> true if you want the arrow hovering next to the result.
+      </p>
 
     </p>
 
@@ -138,7 +144,7 @@ Dropdown  [ link9
   SubMenu.push( new Array("", "33", "Hseparator"));
   SubMenu.push( new Array("submenu", "34", "Right Again", subMenu2));
 
-  MakeNav("NewNav", NavPoints);
+  searchableNavbar("NewNav", NavPoints);
 
 &lt;/script&gt;
 
@@ -165,7 +171,7 @@ Dropdown  [ link9
 &lt;script&gt;
 
   var NavPoints = &lt;?php echo json_encode( $navBar->getStructure() )?&gt;;
-  MakeNav("NewNav", NavPoints);
+  searchableNavbar("NewNav", NavPoints);
 
 &lt;/script&gt;
 
