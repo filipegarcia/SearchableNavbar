@@ -246,7 +246,7 @@ function searchableNavbar(navId, NavPoints, showHover){
 
   SearchId = "NavSearch";
 
-  $('#'+navId).html(NavHead("Super Menu") + NavBody(NavPoints) + NavSearch(SearchId) + NavFooter() );
+  $('#'+navId).empty().append(NavHead("Super Menu") + NavBody(NavPoints) + NavSearch(SearchId) + NavFooter() );
   NavSearchAutoComplete(SearchId, NavPoints, showHover);
 
   if (showHover) {
