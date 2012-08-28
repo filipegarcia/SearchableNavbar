@@ -26,6 +26,7 @@
     position: absolute;
     webkit-border-radius: 3px;
 }
+
 .submenu-hide
 {
     display: none !important;
@@ -144,4 +145,17 @@
   -moz-animation-name: bounce;
   -o-animation-name: bounce;
   animation-name: bounce;
+}
+
+
+
+@media (max-width: 979px) {
+.submenu-show {
+  margin-top: 0px!important;
+}
+
+.nav-collapse.collapse {
+  height: auto !important;
+  overflow: visible !important;
+}
 }

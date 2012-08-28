@@ -4,12 +4,35 @@
 
 
 function SubmenuInit(){
-  jQuery('.submenu').hover(function () {
-      jQuery(this).children('ul').removeClass('submenu-hide').addClass('submenu-show');
-  }, function () {
-      jQuery(this).children('ul').removeClass('.submenu-show').addClass('submenu-hide');
-  }).find("a:first");
+
+  onSmallChange();
+
+  $(window).resize(function() {
+    onSmallChange();
+  });
+
 }
+
+function onSmallChange(){
+  //navbar breakpoint value
+  if ($(window).width() < 979) {
+    $('.submenu').children('ul').removeClass('submenu-hide')
+    $('.submenu').children('ul').addClass('submenu-show');
+    //unbind the mouseover function
+    jQuery('.submenu').unbind('mouseenter').unbind('mouseleave').find("a:first");
+  }
+  else{
+    $('.submenu').children('ul').removeClass('submenu-show')
+    $('.submenu').children('ul').addClass('submenu-hide');
+
+    jQuery('.submenu').hover(function () {
+        jQuery(this).children('ul').removeClass('submenu-hide').addClass('submenu-show');
+    }, function () {
+        jQuery(this).children('ul').removeClass('.submenu-show').addClass('submenu-hide');
+    }).find("a:first");
+  }
+}
+
 
 /* ==========================================================
  *   Generate the html for the navbar
@@ -88,8 +111,9 @@ function RemoveNavActive(navBar){
   $("#elementFound").hide();
   $(navBar).find('.active').removeClass('active');
   $(navBar).find('.open').removeClass('open');
-  $(navBar).find('.submenu-show').removeClass('submenu-show').addClass('submenu-hide');
-
+  if ($(window).width() > 979) {
+    $(navBar).find('.submenu-show').removeClass('submenu-show').addClass('submenu-hide');
+  }
 }
 
 function NavBody(NavPoints){
@@ -190,7 +214,8 @@ function HoverOnElement(element){
 
   element = $("#"+element);
   var offset = element.offset();
-$("#elementFound").show();
+
+  $("#elementFound").show();
   $("#elementFound").offset({ top: offset.top, left: offset.left+element.parent().width()+10})
 
 }
@@ -232,7 +257,6 @@ function NavSearchAutoComplete(SearchId, NavPoints, showHover){
   });
 
 }
-
 
 
 
