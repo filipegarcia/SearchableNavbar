@@ -225,11 +225,14 @@ function NavSearchAutoComplete(SearchId, NavPoints, showHover){
 
   var MenuItems = buildMenuItem(NavPoints);
 
-  // if you want focus on the search bar uncomment this ()
+  // if you want focus on the search bar uncomment this
   //$('#'+SearchId).focus();
 
   $( '#'+SearchId ).autocomplete({
-      source: MenuItems,
+      // source: MenuItems,
+      source: function(request,response){
+                  response(fuzzySearch(request.term, MenuItems));
+              },
       select: function( event, ui ) {
         RemoveNavActive('#MainNav');
         window.location.hash = ui.item.link;
@@ -258,6 +261,19 @@ function NavSearchAutoComplete(SearchId, NavPoints, showHover){
 
 }
 
+function fuzzySearch(SearchTerm, MenuItems){
+
+
+  options = {
+    keys: ['value', 'label'],   // keys to search in
+  }
+
+  f = new Fuse(MenuItems, options);
+  result = f.search( SearchTerm );
+
+return result;
+
+}
 
 
 /* ==========================================================
@@ -279,6 +295,14 @@ function searchableNavbar(navId, NavPoints, showHover){
     $("#"+navId).append(str);
   };
 
+  $(document).keypress(function(e){
+    if (e.which == 70)
+    {
+        $('#'+SearchId).focus();
+        $('#'+SearchId).val("");
+        return null;
+    };
+  });
 
   SubmenuInit();
 
