@@ -160,7 +160,7 @@ function GeneratePath(NavPoints, toFind){
 
   var tempPath = new Array();
   navLength = NavPoints.length - 1 ;
-  //for (var i = 0 ; i <= navLength ; i++) {
+
   for (var i in NavPoints) {
 
     if(toFind.toString() == NavPoints[i][1].toString() ){
