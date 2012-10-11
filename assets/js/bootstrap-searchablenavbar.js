@@ -156,7 +156,6 @@ function buildMenuItem(NavPoints) {
  *   Search and Generate path
  * ========================================================== */
 
-
 function GeneratePath(NavPoints, toFind){
 
   var tempPath = new Array();
@@ -173,7 +172,7 @@ function GeneratePath(NavPoints, toFind){
       }
       return NavPoints[i];
     }
-//Contruct DropDown and submenu path
+    //Build DropDown and submenu path
     else if (NavPoints[i][0] == "dropdown" || NavPoints[i][0] == "submenu" ) {
 
       knownPath = GeneratePath(NavPoints[i][3], toFind);
@@ -199,7 +198,7 @@ function HighlightPath(path, element){
       $('#'+value[1]).parent().children('a').addClass('active');
     }
     //For the dropdown selected items
-     if ( $('#'+value[1]).parent().hasClass('dropdown')  ) {
+    if ( $('#'+value[1]).parent().hasClass('dropdown')  ) {
       $('#'+value[1]).parent().addClass('open');
     }
   });
@@ -229,14 +228,15 @@ function NavSearchAutoComplete(SearchId, NavPoints, showHover){
   //$('#'+SearchId).focus();
 
   $( '#'+SearchId ).autocomplete({
-      // source: MenuItems,
+    // Use just the next line if you don't need fuzzy search... But everybody needs fuzzy search right?
+    //source: MenuItems,
       source: function(request,response){
-                  response(fuzzySearch(request.term, MenuItems));
-              },
+        response(fuzzySearch(request.term, MenuItems));
+      },
       select: function( event, ui ) {
         RemoveNavActive('#MainNav');
         window.location.hash = ui.item.link;
-        // you can use window.location or window.open with the full url
+        //use window.location or window.open with the full url to actually go to the page
       },
       focus: function(event, ui) {
         RemoveNavActive('#MainNav');
@@ -247,7 +247,6 @@ function NavSearchAutoComplete(SearchId, NavPoints, showHover){
         if (showHover) {
           HoverOnElement(ui.item.id);
         };
-
       },
       change: function(event, ui){
         RemoveNavActive('#MainNav');
@@ -261,26 +260,27 @@ function NavSearchAutoComplete(SearchId, NavPoints, showHover){
 
 }
 
-function fuzzySearch(SearchTerm, MenuItems){
+/* ==========================================================
+ *   Fuzzy search the item
+ * ========================================================== */
 
+function fuzzySearch(SearchTerm, MenuItems){
 
   options = {
     keys: ['value', 'label'],   // keys to search in
-  }
+  };
 
   f = new Fuse(MenuItems, options);
   result = f.search( SearchTerm );
 
-return result;
+  return result;
 
 }
 
 
 /* ==========================================================
- *   Constructing the navbar
+ *   Building the navbar
  * ========================================================== */
-
-
 
 function searchableNavbar(navId, NavPoints, showHover){
 
